@@ -1,0 +1,192 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cuenta</title>
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+    <style>
+        /* Estilos generales para el formulario */
+        #edit-account {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+            #edit-account h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                font-weight: bold;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                font-size: 14px;
+            }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo" class="logo">
+            <img src="https://th.bing.com/th/id/OIP.1RhORIDUUNuzZsIwbnlaZQHaCH?rs=1&pid=ImgDetMain" alt="Petfinder Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
+                <li><a asp-controller="Publicar" asp-action="Perdida">Publicar Mascota Perdida</a></li>
+                <li><a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a></li>
+                <li><a asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="edit-account">
+        <h2>Editar Información</h2>
+
+        <form id="edit-form" method="POST">
+            <div class="form-group">
+                <label for="edit-name">Nombre:</label>
+                <input type="text" id="edit-name" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-lastname">Apellido:</label>
+                <input type="text" id="edit-lastname" name="apellido" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-email">Email:</label>
+                <input type="email" id="edit-email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-phone">Teléfono:</label>
+                <input type="text" id="edit-phone" name="telefono" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-password">Contraseña:</label>
+                <input type="password" id="edit-password" name="contrasena" placeholder="Ingrese su nueva contraseña (opcional)">
+            </div>
+            <button type="submit" class="btn">Guardar Cambios</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Petfinder. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (user) {
+                // Pre-cargar los datos del usuario en el formulario
+                document.getElementById('edit-name').value = user.nombre || '';
+                document.getElementById('edit-lastname').value = user.apellido || '';
+                document.getElementById('edit-email').value = user.email || '';
+                document.getElementById('edit-phone').value = user.telefono || '';
+            }
+        });
+
+        // Función para manejar el envío del formulario
+        document.getElementById('edit-form').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Evitar el envío por defecto del formulario
+
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user || !user.id || typeof user.id !== 'string') {
+                alert('El ID del usuario es inválido.');
+                return;
+            }
+
+            const nombre = document.getElementById('edit-name').value;
+            const apellido = document.getElementById('edit-lastname').value;
+            const email = document.getElementById('edit-email').value;
+            const telefono = document.getElementById('edit-phone').value;
+            const contrase_a = document.getElementById('edit-password').value || user.contrasena;  // Si no se ingresa una nueva contraseña, se mantiene la actual
+
+            // Preparamos los datos para la mutación GraphQL
+            const query = `mutation UpdateUsuario($id: ID!, $input: UsuarioInput!) {
+                                                    updateUsuario(id: $id, input: $input) {
+                                                        id
+                                                        nombre
+                                                        apellido
+                                                        email
+                                                        telefono
+                                                        tipo
+                                                    }
+                                                }`;
+
+            try {
+                // Realizar la solicitud POST
+                const response = await fetch("https://localhost:7055/graphql/", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}` // Si es necesario el token de autenticación
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        variables: {
+                            id: String(user.id),  // Pasando el id como string, ya que GraphQL lo espera
+                            input: {
+                                nombre,
+                                apellido,
+                                email,
+                                telefono,
+                                contrase_a,  // Si se proporciona una nueva contraseña, se envía
+                                tipo: "Usuario"  // El tipo de usuario siempre es "Usuario"
+                            }
+                        }
+                    })
+                });
+
+                const responseText = await response.text();
+                console.log("Respuesta completa del servidor:", responseText);
+
+                // Intentar parsear la respuesta del servidor
+                const data = JSON.parse(responseText);
+                console.log("Datos parseados:", data);
+
+                if (data?.data?.updateUsuario) {
+                    alert('Los datos de la cuenta se han actualizado correctamente.');
+                    window.location.href = '/';
+                } else {
+                    console.error("Error en los datos de la respuesta:", data?.errors || "Usuario no actualizado.");
+                    alert('Hubo un error al actualizar los datos.');
+                }
+            } catch (error) {
+                console.error("Error durante la actualización:", error);
+                alert('Error en el servidor. Por favor, intente más tarde.');
+            }
+        });
+    </script>
+
+</body>
+</html>

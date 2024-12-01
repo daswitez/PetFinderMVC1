@@ -1,0 +1,272 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petfinder</title>
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+</head>
+<body>
+    <header>
+        <div id="logo" class="logo">
+            <img src="https://th.bing.com/th/id/OIP.1RhORIDUUNuzZsIwbnlaZQHaCH?rs=1&pid=ImgDetMain" alt="Petfinder Logo">
+        </div>
+        <nav>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()"></div>
+            <ul>
+                <!-- Inicio -->
+                <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+
+                <!-- Sobre Nosotros (usando anclaje absoluto al inicio) -->
+                <li><a href="/#about">Sobre Nosotros</a></li>
+
+                <!-- Adopción -->
+                <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
+
+                <!-- Publicar Mascotas -->
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Publicar</a>
+                    <div class="dropdown-content">
+                        <a asp-controller="Publicar" asp-action="Perdida">Publicar Mascota Perdida</a>
+                        <a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a>
+                    </div>
+                </li>
+
+                <li id="loginButtonContainer">
+                    <!-- Botón de iniciar sesión o ver cuenta según el estado de la sesión -->
+                    <button id="loginButton" class="btn">Iniciar Sesión</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h2>Encuentra Tu Mascota Perfecta</h2>
+        <p>Encuentra la Mascota Ideal para Tu Hogar.</p>
+    </section>
+
+    <section id="adopt" class="adopt">
+        <h2>Adopta una Mascota</h2>
+        <div class="adoption-menu">
+            <div class="adoption-card">
+                <img src="https://github.com/Nogbre/Integrador-PetFInder/blob/master/app/src/main/res/drawable/perro_icon.png?raw=true" alt="Perros">
+            </div>
+            <div class="adoption-card">
+                <img src="https://github.com/Nogbre/Integrador-PetFInder/blob/master/app/src/main/res/drawable/gato_f.png?raw=true" alt="Gatos">
+            </div>
+        </div>
+    </section>
+
+    <section class="pets-adoption">
+        <h2>Mascotas en Adopción</h2>
+        <div class="pet-cards">
+            <div class="pet-card">
+                <div class="pet-image">
+                    <img src="https://via.placeholder.com/200x200" alt="Mascota 1">
+                </div>
+                <div class="pet-info">
+                    <p>Poly</p>
+                    <a asp-controller="Adopcion" asp-action="Index"><button class="btn">Ver Más</button></a>
+                </div>
+            </div>
+            <div class="pet-card">
+                <div class="pet-image">
+                    <img src="https://via.placeholder.com/200x200" alt="Mascota 2">
+                </div>
+                <div class="pet-info">
+                    <p>Sally</p>
+                    <a asp-controller="Adopcion" asp-action="Index"><button class="btn">Ver Más</button></a>
+                </div>
+            </div>
+            <div class="pet-card">
+                <div class="pet-image">
+                    <img src="https://via.placeholder.com/200x200" alt="Mascota 3">
+                </div>
+                <div class="pet-info">
+                    <p>Bartösz</p>
+                    <a asp-controller="Adopcion" asp-action="Index"><button class="btn">Ver Más</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pets-lost">
+        <h2>Mascotas Perdidas</h2>
+        <div class="pet-cards">
+            <div class="pet-card">
+                <div class="pet-image">
+                    <img src="https://via.placeholder.com/200x200" alt="Mascota Perdida 1">
+                </div>
+                <div class="pet-info">
+                    <p>Sansa</p>
+                    <a href="@Url.Action("DetallesPerdida", "Home")" class="view-more-btn">Ver más</a>
+                </div>
+            </div>
+            <div class="pet-card">
+                <div class="pet-image">
+                    <img src="https://via.placeholder.com/200x200" alt="Mascota Perdida 2">
+                </div>
+                <div class="pet-info">
+                    <p>Eggshell</p>
+                    <a href="@Url.Action("DetallesPerdida", "Home")" class="view-more-btn">Ver más</a>
+                </div>
+            </div>
+            <div class="pet-card">
+                <div class="pet-image">
+                    <img src="https://via.placeholder.com/200x200" alt="Mascota Perdida 3">
+                </div>
+                <div class="pet-info">
+                    <p>Mica</p>
+                    <a href="@Url.Action("DetallesPerdida", "Home")" class="view-more-btn">Ver más</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br />
+
+    <section id="more-pets" class="more-pets">
+        <h2>Más Sobre Mascotas</h2>
+        <div class="more-pets-content">
+            <div class="info-card">
+                <img src="https://via.placeholder.com/150" alt="Adopción" class="info-card-img">
+                <h3>Adoptar Es una Gran Responsabilidad</h3>
+                <p>Al adoptar, le das una nueva oportunidad de vida a una mascota. Infórmate sobre cómo prepararte para darle un hogar.</p>
+            </div>
+            <div class="info-card">
+                <img src="https://via.placeholder.com/150" alt="Consejos de Cuidado" class="info-card-img">
+                <h3>Consejos para Cuidar a Tu Nueva Mascota</h3>
+                <p>Una vez adoptada, es importante saber cómo cuidar de tu mascota. Te damos algunos consejos prácticos para su bienestar.</p>
+            </div>
+            <div class="info-card">
+                <img src="https://via.placeholder.com/150" alt="Esterilización" class="info-card-img">
+                <h3>La Importancia de la Esterilización</h3>
+                <p>La esterilización es esencial para evitar la sobrepoblación de animales. Aprende más sobre este proceso y sus beneficios.</p>
+            </div>
+        </div>
+        <a asp-controller="SobreMascotas" asp-action="Index">
+            <button class="btn">Ver Más</button>
+        </a>
+    </section>
+
+    <section id="about" class="about">
+        <h2>Sobre Nosotros</h2>
+        <div class="about-content">
+            <p>En Petfinder, nos dedicamos a ayudar a las mascotas a encontrar el hogar perfecto. Trabajamos con refugios y personas comprometidas a mejorar la vida de animales necesitados.</p>
+            <p>Somos un equipo de voluntarios apasionados por los animales y creemos firmemente que todos merecen una segunda oportunidad.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Petfinder. All rights reserved.</p>
+    </footer>
+
+
+    <script>
+        // Comprobar si el usuario está logueado usando localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Si el usuario está logueado, cambiar el botón a "Ver Cuenta"
+            document.getElementById('loginButton').innerText = 'Ver Cuenta';
+            document.getElementById('loginButton').onclick = function () {
+                // Redirigir a la página de cuenta o dashboard del usuario
+                window.location.href = '/Home/AccountDetails'; // Cambiar a la ruta correcta si es necesario
+            };
+        } else {
+            // Si no hay usuario en localStorage, mantener el botón como "Iniciar Sesión"
+            document.getElementById('loginButton').innerText = 'Iniciar Sesión';
+            document.getElementById('loginButton').onclick = function () {
+                window.location.href = '/Home/Login'; // Cambiar a la ruta correcta si es necesario
+            };
+        }
+
+        function toggleMenu() {
+            const hamburger = document.getElementById("hamburger");
+            const navbarMenu = document.querySelector("nav ul");
+            if (hamburger && navbarMenu) {
+                hamburger.classList.toggle("active");
+                navbarMenu.classList.toggle("active");
+            }
+        }
+
+    </script>
+
+    <script>
+        async function cargarPublicaciones() {
+            try {
+                const response = await fetch("http://petfinder.somee.com/graphql/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        query: `query {
+                                            publicaciones {
+                                                id
+                                                estado
+                                                foto
+                                                descripcion
+                                                nombre
+                                            }
+                                        }`,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const { data } = await response.json();
+                const publicaciones = data.publicaciones;
+
+                const contenedorAdopcion = document.querySelector(".pets-adoption .pet-cards");
+                const contenedorPerdidas = document.querySelector(".pets-lost .pet-cards");
+
+                contenedorAdopcion.innerHTML = "";
+                contenedorPerdidas.innerHTML = "";
+
+                publicaciones.forEach((publicacion) => {
+                    const card = document.createElement("div");
+                    card.className = "pet-card";
+
+                    // Contenido de la tarjeta
+                    card.innerHTML = `
+                                    <img src="${publicacion.foto}" alt="Mascota">
+                                    <div class="pet-info">
+                                        <p>${publicacion.nombre}</p>
+                                        <p>${publicacion.descripcion}</p>
+                                    </div>
+                                `;
+
+                    if (publicacion.estado === "Adopción") {
+                        contenedorAdopcion.appendChild(card);
+                    } else if (publicacion.estado === "Perdida") {
+                        // Agregar botón "Ver Más" para mascotas perdidas
+                        const btn = document.createElement("button");
+                        btn.className = "btn view-more-btn";
+                        btn.innerText = "Ver más";
+                        btn.onclick = function () {
+                            window.location.href = "/Home/DetallesPerdida";
+                        };
+
+                        const petInfo = card.querySelector(".pet-info");
+                        petInfo.appendChild(btn);
+
+                        contenedorPerdidas.appendChild(card);
+                    }
+                });
+            } catch (error) {
+                console.error("Error al cargar publicaciones:", error);
+                alert("No se pudieron cargar las publicaciones. Inténtalo más tarde.");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", cargarPublicaciones);
+    </script>
+</body>
+</html>

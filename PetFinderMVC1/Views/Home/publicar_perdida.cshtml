@@ -1,0 +1,207 @@
+﻿@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Mascota Perdida</title>
+    <link rel="stylesheet" href="~/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            header #logo img {
+                max-width: 150px;
+            }
+
+            header nav ul {
+                display: flex;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                gap: 1.5rem;
+            }
+
+                header nav ul li a {
+                    text-decoration: none;
+                    color: #660c79;
+                    font-size: 1rem;
+                }
+
+                header nav ul li .btn {
+                    background-color: #660c79;
+                    color: #fff;
+                    border: none;
+                    padding: 0.5rem 1rem;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #660c79;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        select,
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        button {
+            background-color: #660c79;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #520a5c;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo" class="logo">
+            <img src="https://th.bing.com/th/id/OIP.1RhORIDUUNuzZsIwbnlaZQHaCH?rs=1&pid=ImgDetMain" alt="Petfinder Logo">
+        </div>
+        <nav>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()"></div>
+            <ul>
+                <!-- Inicio -->
+                <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+
+                <!-- Sobre Nosotros (usando anclaje absoluto al inicio) -->
+                <li><a href="/#about">Sobre Nosotros</a></li>
+
+                <!-- Adopción -->
+                <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
+
+                <!-- Publicar Mascotas -->
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Publicar</a>
+                    <div class="dropdown-content">
+                        <a asp-controller="Publicar" asp-action="Perdida">Publicar Mascota Perdida</a>
+                        <a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a>
+                    </div>
+                </li>
+
+                <!-- Iniciar Sesión -->
+                <li>
+                    <a asp-controller="Account" asp-action="Login">
+                        <button class="btn">Iniciar Sesión</button>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        <h1>Publicar Mascota Perdida</h1>
+        <form asp-action="PublicarMascotaPerdida" method="post" enctype="multipart/form-data">
+            <label for="name">Nombre de la mascota:</label>
+            <input type="text" id="name" name="name" placeholder="Ej: Max" required>
+
+            <label for="breed">Raza:</label>
+            <input type="text" id="breed" name="breed" placeholder="Ej: Labrador, mestizo" required>
+
+            <label for="size">Tamaño:</label>
+            <select id="size" name="size" required>
+                <option value="" disabled selected>Seleccione el tamaño</option>
+                <option value="pequeno">Pequeño</option>
+                <option value="mediano">Mediano</option>
+                <option value="grande">Grande</option>
+            </select>
+
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color" placeholder="Ej: Marrón, blanco y negro" required>
+
+            <label for="type">Tipo de mascota:</label>
+            <select id="type" name="type" required>
+                <option value="" disabled selected>Seleccione el tipo</option>
+                <option value="perro">Perro</option>
+                <option value="gato">Gato</option>
+            </select>
+
+            <label for="gender">Sexo:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Seleccione el sexo</option>
+                <option value="macho">Macho</option>
+                <option value="hembra">Hembra</option>
+            </select>
+
+            <label for="description">Descripción:</label>
+            <textarea id="description" name="description" placeholder="Añada detalles como su carácter, si llevaba collar, etc." required></textarea>
+
+            <label for="image">Imagen de la mascota:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <label for="location">Ubicación aproximada:</label>
+            <input type="text" id="location" name="location" placeholder="Ej: Calle Principal 123, Ciudad" disabled>
+
+            <button type="submit">Publicar</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const hamburger = document.getElementById("hamburger");
+            const navbarMenu = document.querySelector("nav ul");
+            hamburger.classList.toggle("active");
+            navbarMenu.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

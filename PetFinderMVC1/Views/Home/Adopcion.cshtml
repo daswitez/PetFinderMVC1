@@ -1,0 +1,168 @@
+﻿@{
+    Layout = null;
+
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+        }
+
+        header #logo img {
+            max-width: 150px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            color: #660c79;
+        }
+
+        nav .btn {
+            background-color: #660c79;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .adoption-section {
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        .adoption-section h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #660c79;
+        }
+
+        .adoption-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .adoption-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .adoption-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .adoption-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .adoption-card div {
+            padding: 1rem;
+        }
+
+        .adoption-card h2 {
+            font-size: 1.5rem;
+            color: #660c79;
+            margin-bottom: 0.5rem;
+        }
+
+        .adoption-card p {
+            font-size: 1rem;
+            color: #555;
+            margin: 0.5rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #660c79;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo" class="logo">
+            <img src="https://th.bing.com/th/id/OIP.1RhORIDUUNuzZsIwbnlaZQHaCH?rs=1&pid=ImgDetMain" alt="Petfinder Logo">
+        </div>
+        <nav>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()"></div>
+            <ul>
+                <!-- Inicio -->
+                <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+
+                <!-- Sobre Nosotros (usando anclaje absoluto al inicio) -->
+                <li><a href="/#about">Sobre Nosotros</a></li>
+
+                <!-- Adopción -->
+                <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
+
+                <!-- Publicar Mascotas -->
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Publicar</a>
+                    <div class="dropdown-content">
+                        <a asp-controller="Publicar" asp-action="Perdida">Publicar Mascota Perdida</a>
+                        <a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a>
+                    </div>
+                </li>
+
+                <!-- Iniciar Sesión -->
+                <li>
+                    <a asp-controller="Account" asp-action="Login">
+                        <button class="btn">Iniciar Sesión</button>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <section class="adoption-section">
+        <h1>Mascotas Disponibles para Adopción</h1>
+        <div class="adoption-cards">
+           
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Petfinder. All rights reserved.</p>
+    </footer>
+</body>
+</html>

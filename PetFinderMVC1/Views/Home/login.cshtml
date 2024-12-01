@@ -1,0 +1,179 @@
+﻿@model PetFinderMVC1.ViewModels.LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #660c79, #836fff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .login-form {
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .button input {
+            width: 100%;
+            padding: 12px;
+            background: #660c79;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+            .button input:hover {
+                background: #4c3aa9;
+            }
+
+        .link {
+            display: block;
+            margin-top: 15px;
+            color: #660c79;
+            text-decoration: none;
+        }
+
+            .link:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-form">
+            <h2>Iniciar sesión</h2>
+            @if (Model?.ErrorMessage != null && !string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <p style="color:red;">@Model.ErrorMessage</p>
+            }
+            <form id="loginForm">
+                <div class="input-box">
+                    <input type="email" id="email" name="Email" placeholder="Correo" required />
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" name="Password" placeholder="Contraseña" required />
+                </div>
+                <div class="button">
+                    <input type="submit" value="Iniciar sesión" />
+                </div>
+            </form>
+            <p>¿No tienes cuenta? <a href="/Account/Register" class="link">Regístrate</a></p> 
+        </div>
+    </div>
+
+    <script>
+        // Login Form Submission (AJAX)
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            console.log("Iniciando el login...");
+            console.log("Datos enviados:", { email, password });
+
+            try {
+                const response = await fetch("https://localhost:7055/graphql/", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: `mutation Login($input: LoginInput!) {
+                                            login(input: $input) {
+                                                token
+                                                usuario {
+                                                    id
+                                                    nombre
+                                                    apellido
+                                                    email
+                                                    tipo
+                                                    contrase_a
+                                                    telefono
+                                                }
+                                            }
+                                        }`,
+                        variables: {
+                            input: { email, password }
+                        },
+                    }),
+                });
+
+                const responseText = await response.text();
+                console.log("Respuesta completa del servidor:", responseText);
+
+                const data = JSON.parse(responseText);
+                console.log("Datos parseados:", data);
+
+                if (data?.data?.login?.token) {
+                    // Guardar el token y los datos del usuario en localStorage
+                    localStorage.setItem('token', data.data.login.token);
+                    localStorage.setItem('user', JSON.stringify(data.data.login.usuario));
+
+                    alert('Login exitoso');
+                    window.location.href = '/Home/Index';
+                } else {
+                    console.error("Error en los datos de la respuesta:", data?.errors || "Token no encontrado.");
+                    alert('Credenciales inválidas');
+                }
+            } catch (error) {
+                console.error("Error durante la autenticación:", error);
+                alert('Error en el servidor. Por favor, intente más tarde.');
+            }
+        });
+    </script>
+
+
+</body>
+</html>

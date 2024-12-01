@@ -1,0 +1,530 @@
+﻿
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 1.6;
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
+}
+
+
+header {
+    background-color: #ffffff;
+    color: #660c79;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    header img {
+        max-width: 150px;
+        height: auto;
+    }
+
+    header nav ul {
+        list-style: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+    }
+
+        header nav ul li {
+            margin: 0 1rem;
+        }
+
+            header nav ul li a {
+                color: #660c79;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+                header nav ul li a:hover {
+                    background-color: #f2e6f3;
+                    color: #ffffff;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                }
+
+        header nav ul .btn {
+            background-color: #660c79;
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-left: 1rem;
+        }
+
+            header nav ul .btn:hover {
+                background-color: #831a99;
+                transform: scale(1.05);
+            }
+
+
+.hero {
+    background: url(https://github.com/Nogbre/Integrador-PetFInder/blob/master/app/src/main/res/drawable/banner_1.png?raw=true) no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .hero h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero .btn {
+        background-color: #660c79;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+        .hero .btn:hover {
+            background-color: #831a99;
+            transform: scale(1.05);
+        }
+
+
+.about {
+    background: linear-gradient( rgba(102, 12, 121, 0.8), rgba(102, 12, 121, 0.8) ), url('https://images.unsplash.com/photo-1558979158-65a1eaa08691') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 2rem 2rem;
+    margin-top: 70px;
+}
+
+    .about h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .about p {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        line-height: 1.8;
+    }
+
+
+.adopt h2 {
+    text-align: center;
+    color: #660c79;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.adoption-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6rem;
+    padding: 3rem;
+}
+
+.adoption-card {
+    width: 230px;
+    height: 230px;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .adoption-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .adoption-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .adoption-card:hover {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+
+.pets-adoption {
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+    .pets-adoption h2 {
+        font-size: 2rem;
+        color: #660c79;
+        margin-bottom: 2rem;
+    }
+
+.pet-cards {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.pet-card {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .pet-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .pet-card .pet-info {
+        padding: 0.2rem;
+        background-color: #ffffff;
+        text-align: center;
+    }
+
+        .pet-card .pet-info p {
+            font-size: 1rem;
+            color: #660c79;
+        }
+
+    
+    .pet-card.ver-mas {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #660c79;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 1rem 2rem;
+        border-radius: 5px;
+        width: 200px;
+        height: 200px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .pet-card.ver-mas:hover {
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+
+footer {
+    background-color: #660c79;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+
+.favorite-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #ff6f61;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+    .favorite-btn:hover {
+        color: #660c79;
+    }
+
+.meet-btn {
+    display: inline-block;
+    background-color: #660c79;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .meet-btn:hover {
+        background-color: #831a99;
+        transform: scale(1.05);
+    }
+
+.contact {
+    background-color: #f9f9f9;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #660c79;
+    border-radius: 5px;
+}
+
+    .contact h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .contact form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .contact input, .contact textarea {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .contact textarea {
+        height: 150px;
+        resize: none;
+    }
+
+    .contact button {
+        background-color: #660c79;
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .contact button:hover {
+            background-color: #831a99;
+        }
+
+.learn {
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+    .learn h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+.learn-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.learn-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .learn-card img {
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+        margin-bottom: 15px;
+    }
+
+    .learn-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #444;
+    }
+
+    .learn-card p {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .learn-card .learn-btn {
+        background-color: #660c79;
+        color: rgb(255, 255, 255);
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+        .learn-card .learn-btn:hover {
+            background-color: #8910a1;
+        }
+
+    .learn-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    gap: 1.5rem;
+}
+
+    nav ul li {
+        position: relative;
+    }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #660c79;
+            font-size: 1rem;
+        }
+
+        nav ul li .btn {
+            background-color: #660c79;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+
+.dropdown-content {
+    display: none; 
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    z-index: 1;
+    border-radius: 5px;
+    padding: 0.5rem 0;
+}
+
+    .dropdown-content a {
+        color: #660c79;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        display: block;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+        .dropdown-content a:hover {
+            background-color: #441053;
+        }
+
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropbtn {
+    cursor: pointer;
+}
+
+section {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+    section h2 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+
+.more-pets {
+    background-color: #f4f4f4;
+    margin-top: 40px;
+}
+
+.more-pets-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.info-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 280px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+    .info-card h3 {
+        font-size: 1.8em;
+        color: #333;
+    }
+
+    .info-card p {
+        font-size: 1em;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .info-card button {
+        margin-top: 20px;
+    }
+
+
+button.btn {
+    background-color: #7D4BDB; 
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+    button.btn:hover {
+        background-color: #5a3c9c;
+    }

@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta</title>
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+</head>
+<body>
+    <header>
+        <div id="logo" class="logo">
+            <img src="https://th.bing.com/th/id/OIP.1RhORIDUUNuzZsIwbnlaZQHaCH?rs=1&pid=ImgDetMain" alt="Petfinder Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
+                <li><a asp-controller="Publicar" asp-action="Perdida">Publicar Mascota Perdida</a></li>
+                <li><a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a></li>
+                <li><a asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="account-details">
+        <h2>Mi Cuenta</h2>
+
+        <div class="account-info">
+            <p><strong>ID:</strong> <span id="user-id">Cargando...</span></p>
+            <p><strong>Nombre:</strong> <span id="user-name">Cargando...</span></p>
+            <p><strong>Apellido:</strong> <span id="user-lastname">Cargando...</span></p>
+            <p><strong>Email:</strong> <span id="user-email">Cargando...</span></p>
+            <p><strong>Teléfono:</strong> <span id="user-phone">Cargando...</span></p>
+        </div>
+
+        <div class="account-actions">
+            <a href="@Url.Action("EditAccount", "Home")" class="btn">Editar Información</a>
+        </div>
+
+
+
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Petfinder. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (user) {
+                document.getElementById('user-id').textContent = user.id || 'No disponible';
+                document.getElementById('user-name').textContent = user.nombre || 'No disponible';
+                document.getElementById('user-lastname').textContent = user.apellido || 'No disponible';
+                document.getElementById('user-email').textContent = user.email || 'No disponible';
+                document.getElementById('user-phone').textContent = user.telefono || 'No disponible';
+            } else {
+                document.getElementById('user-id').textContent = 'No disponible';
+                document.getElementById('user-name').textContent = 'No disponible';
+                document.getElementById('user-lastname').textContent = 'No disponible';
+                document.getElementById('user-email').textContent = 'No disponible';
+                document.getElementById('user-phone').textContent = 'No disponible';
+            }
+        });
+    </script>
+
+</body>
+</html>
