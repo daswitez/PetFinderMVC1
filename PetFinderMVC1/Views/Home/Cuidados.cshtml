@@ -133,16 +133,12 @@
         <nav>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()"></div>
             <ul>
-                <!-- Inicio -->
                 <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
 
-                <!-- Sobre Nosotros (usando anclaje absoluto al inicio) -->
                 <li><a href="/#about">Sobre Nosotros</a></li>
 
-                <!-- Adopción -->
                 <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
 
-                <!-- Publicar Mascotas -->
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Publicar</a>
                     <div class="dropdown-content">
@@ -151,7 +147,6 @@
                     </div>
                 </li>
 
-                <!-- Iniciar Sesión -->
                 <li>
                     <a asp-controller="Account" asp-action="Login">
                         <button class="btn">Iniciar Sesión</button>

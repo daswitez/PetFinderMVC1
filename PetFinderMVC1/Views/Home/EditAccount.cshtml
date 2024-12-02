@@ -10,7 +10,6 @@
     <title>Editar Cuenta</title>
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
     <style>
-        /* Estilos generales para el formulario */
         #edit-account {
             padding: 20px;
             max-width: 500px;
@@ -107,7 +106,6 @@
             const user = JSON.parse(localStorage.getItem('user'));
 
             if (user) {
-                // Pre-cargar los datos del usuario en el formulario
                 document.getElementById('edit-name').value = user.nombre || '';
                 document.getElementById('edit-lastname').value = user.apellido || '';
                 document.getElementById('edit-email').value = user.email || '';
@@ -115,9 +113,8 @@
             }
         });
 
-        // Función para manejar el envío del formulario
         document.getElementById('edit-form').addEventListener('submit', async function (event) {
-            event.preventDefault(); // Evitar el envío por defecto del formulario
+            event.preventDefault(); 
 
             const user = JSON.parse(localStorage.getItem('user'));
             if (!user || !user.id || typeof user.id !== 'string') {
@@ -129,9 +126,8 @@
             const apellido = document.getElementById('edit-lastname').value;
             const email = document.getElementById('edit-email').value;
             const telefono = document.getElementById('edit-phone').value;
-            const contrase_a = document.getElementById('edit-password').value || user.contrasena;  // Si no se ingresa una nueva contraseña, se mantiene la actual
+            const contrase_a = document.getElementById('edit-password').value || user.contrasena;  
 
-            // Preparamos los datos para la mutación GraphQL
             const query = `mutation UpdateUsuario($id: ID!, $input: UsuarioInput!) {
                                                     updateUsuario(id: $id, input: $input) {
                                                         id
@@ -144,24 +140,23 @@
                                                 }`;
 
             try {
-                // Realizar la solicitud POST
                 const response = await fetch("http://petfinder.somee.com/graphql/", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${user.token}` // Si es necesario el token de autenticación
+                        'Authorization': `Bearer ${user.token}` 
                     },
                     body: JSON.stringify({
                         query: query,
                         variables: {
-                            id: String(user.id),  // Pasando el id como string, ya que GraphQL lo espera
+                            id: String(user.id),  
                             input: {
                                 nombre,
                                 apellido,
                                 email,
                                 telefono,
-                                contrase_a,  // Si se proporciona una nueva contraseña, se envía
-                                tipo: "Usuario"  // El tipo de usuario siempre es "Usuario"
+                                contrase_a,  
+                                tipo: "Usuario"  
                             }
                         }
                     })
@@ -170,7 +165,6 @@
                 const responseText = await response.text();
                 console.log("Respuesta completa del servidor:", responseText);
 
-                // Intentar parsear la respuesta del servidor
                 const data = JSON.parse(responseText);
                 console.log("Datos parseados:", data);
 

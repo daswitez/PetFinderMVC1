@@ -170,7 +170,7 @@ mutation CreateUsuario($input: UsuarioInput!) {
 
         public IActionResult AccountDetails()
         {
-            return View(); // Simplemente retorna la vista de detalles
+            return View(); 
         }
         public IActionResult EditAccount()
         {
@@ -178,13 +178,10 @@ mutation CreateUsuario($input: UsuarioInput!) {
         }
 
 
-        // Acción para cerrar sesión
         public IActionResult Logout()
         {
-            // Eliminar las cookies de autenticación al cerrar sesión
             Response.Cookies.Delete("AuthToken");
 
-            // Redirigir al Home después de cerrar sesión
             return RedirectToAction("Index", "Home");
         }
     }

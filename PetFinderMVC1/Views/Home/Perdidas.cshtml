@@ -54,25 +54,25 @@
             font-size: 1rem;
         }
 
-        .adoption-section {
+        .lost-section {
             padding: 2rem;
             background-color: #f9f9f9;
         }
 
-            .adoption-section h1 {
+            .lost-section h1 {
                 text-align: center;
                 font-size: 2.5rem;
                 margin-bottom: 2rem;
                 color: #660c79;
             }
 
-        .adoption-cards {
+        .lost-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
-        .adoption-card {
+        .lost-card {
             background-color: #fff;
             border-radius: 10px;
             overflow: hidden;
@@ -80,31 +80,46 @@
             transition: transform 0.3s ease;
         }
 
-            .adoption-card:hover {
+            .lost-card:hover {
                 transform: translateY(-5px);
             }
 
-            .adoption-card img {
+            .lost-card img {
                 width: 100%;
                 height: 200px;
                 object-fit: cover;
             }
 
-            .adoption-card div {
+            .lost-card div {
                 padding: 1rem;
             }
 
-            .adoption-card h2 {
+            .lost-card h2 {
                 font-size: 1.5rem;
                 color: #660c79;
                 margin-bottom: 0.5rem;
             }
 
-            .adoption-card p {
+            .lost-card p {
                 font-size: 1rem;
                 color: #555;
                 margin: 0.5rem 0;
             }
+
+            .lost-card .btn {
+                display: inline-block;
+                margin-top: 1rem;
+                text-align: center;
+                padding: 0.5rem 1rem;
+                background-color: #660c79;
+                color: #fff;
+                border-radius: 5px;
+                text-decoration: none;
+            }
+
+                .lost-card .btn:hover {
+                    background-color: #8a2be2;
+                }
 
         footer {
             text-align: center;
@@ -123,16 +138,9 @@
         <nav>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()"></div>
             <ul>
-                <!-- Inicio -->
                 <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
-
-                <!-- Sobre Nosotros (usando anclaje absoluto al inicio) -->
                 <li><a href="/#about">Sobre Nosotros</a></li>
-
-                <!-- Adopción -->
                 <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
-
-                <!-- Publicar Mascotas -->
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Publicar</a>
                     <div class="dropdown-content">
@@ -140,8 +148,6 @@
                         <a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a>
                     </div>
                 </li>
-
-                <!-- Iniciar Sesión -->
                 <li>
                     <button id="loginButton" class="btn">Iniciar Sesión</button>
                 </li>
@@ -149,50 +155,9 @@
         </nav>
     </header>
 
-    <section class="adoption-section">
+    <section class="lost-section">
         <h1>Mascotas Perdidas</h1>
-        <div class="adoption-cards">
-            <!-- Ejemplo de tarjetas de mascotas perdidas -->
-            <div class="adoption-card">
-                <img src="https://via.placeholder.com/300x200" alt="Mascota 1">
-                <div>
-                    <h2>Poly</h2>
-                    <p>Edad: 2 años</p>
-                    <p>Raza: Labrador</p>
-                    <p>Descripción: Juguetona y amigable.</p>
-                </div>
-            </div>
-
-            <div class="adoption-card">
-                <img src="https://via.placeholder.com/300x200" alt="Mascota 2">
-                <div>
-                    <h2>Sally</h2>
-                    <p>Edad: 3 años</p>
-                    <p>Raza: Golden Retriever</p>
-                    <p>Descripción: Tranquila y cariñosa.</p>
-                </div>
-            </div>
-
-            <div class="adoption-card">
-                <img src="https://via.placeholder.com/300x200" alt="Mascota 3">
-                <div>
-                    <h2>Bartösz</h2>
-                    <p>Edad: 1 año</p>
-                    <p>Raza: Husky</p>
-                    <p>Descripción: Energético y aventurero.</p>
-                </div>
-            </div>
-
-            <div class="adoption-card">
-                <img src="https://via.placeholder.com/300x200" alt="Mascota 4">
-                <div>
-                    <h2>Tommy</h2>
-                    <p>Edad: 5 años</p>
-                    <p>Raza: Beagle</p>
-                    <p>Descripción: Curioso y leal.</p>
-                </div>
-            </div>
-        </div>
+        <div class="lost-cards" id="lostCards"></div>
     </section>
 
     <footer>
@@ -229,6 +194,58 @@
             if (hamburger) {
                 hamburger.addEventListener('click', toggleMenu);
             }
+
+            async function loadLostPets() {
+                try {
+                    const response = await fetch("http://petfinder.somee.com/graphql/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            query: `query {
+                                                                            publicaciones {
+                                                                                id
+                                                                                nombre
+                                                                                descripcion
+                                                                                foto
+                                                                                estado
+                                                                            }
+                                                                        }`,
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const { data } = await response.json();
+                    const allPets = data.publicaciones;
+
+                    const lostPets = allPets.filter(pet => pet.estado === "Perdida");
+
+                    const lostCardsContainer = document.getElementById("lostCards");
+                    lostCardsContainer.innerHTML = "";
+
+                    lostPets.forEach((pet) => {
+                        const card = document.createElement("div");
+                        card.className = "lost-card";
+                        card.innerHTML = `
+                                    <img src="${pet.foto || 'https://via.placeholder.com/200x200'}" alt="${pet.nombre}">
+                                    <div>
+                                        <h2>${pet.nombre}</h2>
+                                        <p>${pet.descripcion}</p>
+                                        <a href="/Home/DetallesPerdida?id=${pet.id}" class="btn">Ver Más</a>
+                                    </div>
+                                `;
+                        lostCardsContainer.appendChild(card);
+                    });
+                } catch (error) {
+                    console.error("Error al cargar mascotas perdidas:", error);
+                }
+            }
+
+            loadLostPets();
         });
     </script>
 </body>

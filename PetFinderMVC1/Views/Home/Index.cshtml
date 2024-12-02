@@ -25,7 +25,7 @@
                 <li><a href="/#about">Sobre Nosotros</a></li>
 
                 <!-- Adopción -->
-                <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
+                <li><a asp-controller="Home" asp-action="Adopcion">Adopta una mascota</a></li>
 
                 <!-- Publicar Mascotas -->
                 <li class="dropdown">
@@ -61,71 +61,20 @@
         </div>
     </section>
 
-<section class="pets-adoption">
-    <h2>Mascotas en Adopción</h2>
-    <div class="pet-cards">
-        <div class="pet-card">
-            <div class="pet-image">
-                <img src="https://via.placeholder.com/200x200" alt="Mascota en Adopción 1">
-            </div>
-            <div class="pet-info">
-                <p>Poly</p>
-                <a href="@Url.Action("DetallesAdopcion", "Adopcion", new { id = 1 })" class="view-more-btn">Ver más</a>
-            </div>
+    <section class="pets-adoption">
+        <h2>Mascotas en Adopción</h2>
+        <div class="pet-cards" id="adoption-pets">
+            <!-- Aquí se cargan las 4 publicaciones de adopción -->
         </div>
-        <div class="pet-card">
-            <div class="pet-image">
-                <img src="https://via.placeholder.com/200x200" alt="Mascota en Adopción 2">
-            </div>
-            <div class="pet-info">
-                <p>Sally</p>
-                <a href="@Url.Action("DetallesAdopcion", "Adopcion", new { id = 2 })" class="view-more-btn">Ver más</a>
-            </div>
-        </div>
-        <div class="pet-card">
-            <div class="pet-image">
-                <img src="https://via.placeholder.com/200x200" alt="Mascota en Adopción 3">
-            </div>
-            <div class="pet-info">
-                <p>Bartösz</p>
-                <a href="@Url.Action("DetallesAdopcion", "Adopcion", new { id = 3 })" class="view-more-btn">Ver más</a>
-            </div>
-        </div>
-    </div>
-</section>
-
+        <a href="/Home/Adopcion" class="btn">Ver más mascotas en adopción</a>
+    </section>
 
     <section class="pets-lost">
         <h2>Mascotas Perdidas</h2>
-        <div class="pet-cards">
-            <div class="pet-card">
-                <div class="pet-image">
-                    <img src="https://via.placeholder.com/200x200" alt="Mascota Perdida 1">
-                </div>
-                <div class="pet-info">
-                    <p>Sansa</p>
-                    <a href="@Url.Action("DetallesPerdida", "Home")" class="view-more-btn">Ver más</a>
-                </div>
-            </div>
-            <div class="pet-card">
-                <div class="pet-image">
-                    <img src="https://via.placeholder.com/200x200" alt="Mascota Perdida 2">
-                </div>
-                <div class="pet-info">
-                    <p>Eggshell</p>
-                    <a href="@Url.Action("DetallesPerdida", "Home")" class="view-more-btn">Ver más</a>
-                </div>
-            </div>
-            <div class="pet-card">
-                <div class="pet-image">
-                    <img src="https://via.placeholder.com/200x200" alt="Mascota Perdida 3">
-                </div>
-                <div class="pet-info">
-                    <p>Mica</p>
-                    <a href="@Url.Action("DetallesPerdida", "Home")" class="view-more-btn">Ver más</a>
-                </div>
-            </div>
+        <div class="pet-cards" id="lost-pets">
+            <!-- Aquí se cargan las 4 publicaciones de mascotas perdidas -->
         </div>
+        <a href="/Home/Perdidas" class="btn">Ver más mascotas perdidas</a>
     </section>
 
     <br />
@@ -133,16 +82,12 @@
     <section id="more-pets" class="more-pets">
         <h2>Más Sobre Mascotas</h2>
         <div class="more-pets-content">
-
-            <!-- Imagen alineada correctamente -->
             <div class="info-card">
                 <img src="https://www.bezzia.com/wp-content/uploads/2018/02/3-libros-recomendados-para-el-cuidado-de-mascotas-1.jpg"
                      alt="Adopción"
                      class="info-card-img">
             </div>
-            <!-- Texto alineado -->
             <div class="info-text">
-
                 <h3>Adoptar Es una Gran Responsabilidad</h3>
                 <p>Al adoptar, le das una nueva oportunidad de vida a una mascota. Infórmate sobre cómo prepararte para darle un hogar.</p>
                 <a asp-controller="SobreMascotas" asp-action="Index" class="btn-link">
@@ -164,23 +109,19 @@
         <p>&copy; 2024 Petfinder. All rights reserved.</p>
     </footer>
 
-
     <script>
         // Comprobar si el usuario está logueado usando localStorage
         const user = JSON.parse(localStorage.getItem('user'));
 
         if (user) {
-            // Si el usuario está logueado, cambiar el botón a "Ver Cuenta"
             document.getElementById('loginButton').innerText = 'Ver Cuenta';
             document.getElementById('loginButton').onclick = function () {
-                // Redirigir a la página de cuenta o dashboard del usuario
-                window.location.href = '/Home/AccountDetails'; // Cambiar a la ruta correcta si es necesario
+                window.location.href = '/Home/AccountDetails';
             };
         } else {
-            // Si no hay usuario en localStorage, mantener el botón como "Iniciar Sesión"
             document.getElementById('loginButton').innerText = 'Iniciar Sesión';
             document.getElementById('loginButton').onclick = function () {
-                window.location.href = '/Home/Login'; // Cambiar a la ruta correcta si es necesario
+                window.location.href = '/Home/Login';
             };
         }
 
@@ -193,9 +134,6 @@
             }
         }
 
-    </script>
-
-    <script>
         async function cargarPublicaciones() {
             try {
                 const response = await fetch("http://petfinder.somee.com/graphql/", {
@@ -205,14 +143,15 @@
                     },
                     body: JSON.stringify({
                         query: `query {
-                                    publicaciones {
-                                        id
-                                        estado
-                                        foto
-                                        descripcion
-                                        nombre
-                                    }
-                                }`,
+                                                    publicaciones {
+                                                        id
+                                                        estado
+                                                        foto
+                                                        descripcion
+                                                        nombre
+                                                    }
+                                                }`,
+
                     }),
                 });
 
@@ -223,38 +162,36 @@
                 const { data } = await response.json();
                 const publicaciones = data.publicaciones;
 
-                const contenedorAdopcion = document.querySelector(".pets-adoption .pet-cards");
-                const contenedorPerdidas = document.querySelector(".pets-lost .pet-cards");
+                const contenedorAdopcion = document.querySelector("#adoption-pets");
+                const contenedorPerdidas = document.querySelector("#lost-pets");
 
                 contenedorAdopcion.innerHTML = "";
                 contenedorPerdidas.innerHTML = "";
+
+                let adopcionCount = 0;
+                let perdidasCount = 0;
 
                 publicaciones.forEach((publicacion) => {
                     const card = document.createElement("div");
                     card.className = "pet-card";
 
-                    // Contenido de la tarjeta
                     card.innerHTML = `
-                            <div class="pet-image">
-                                <img src="${publicacion.foto || 'https://via.placeholder.com/200x200'}" alt="${publicacion.nombre}">
-                            </div>
-                            <div class="pet-info">
-                                <p>${publicacion.nombre}</p>
-                                <p>${publicacion.descripcion}</p>
-                                ${publicacion.estado === "Adopción"
-                            ? '<a href="/Home/DetallesAdopcion?id=' + publicacion.id + '"><button class="btn view-more-btn">Ver más</button></a>'
-                            : ''}
-                                ${publicacion.estado === "Perdida"
-                            ? '<button class="btn view-more-btn" onclick="window.location.href=\'/Home/DetallesPerdida?id=' + publicacion.id + '\'">Ver más</button>'
-                            : ""}
-                            </div>
-                        `;
+                                        <div class="pet-image">
+                                            <img src="${publicacion.foto || 'https://via.placeholder.com/200x200'}" alt="${publicacion.nombre}">
+                                        </div>
+                                        <div class="pet-info">
+                                            <p>${publicacion.nombre}</p>
+                                            <p>${publicacion.descripcion}</p>
+                                            <a href="${publicacion.estado === 'Adopción' ? '/Home/DetallesAdopcion?id=' + publicacion.id : '/Home/DetallesPerdida?id=' + publicacion.id}" class="view-more-btn">Ver más</a>
+                                        </div>
+                                    `;
 
-                    // Añadir tarjeta al contenedor correspondiente según el estado
-                    if (publicacion.estado === "Adopción") {
+                    if (publicacion.estado === 'Adopción' && adopcionCount < 4) {
                         contenedorAdopcion.appendChild(card);
-                    } else if (publicacion.estado === "Perdida") {
+                        adopcionCount++;
+                    } else if (publicacion.estado === 'Perdida' && perdidasCount < 4) {
                         contenedorPerdidas.appendChild(card);
+                        perdidasCount++;
                     }
                 });
             } catch (error) {
@@ -265,7 +202,6 @@
 
         document.addEventListener("DOMContentLoaded", cargarPublicaciones);
     </script>
-
 
 </body>
 </html>

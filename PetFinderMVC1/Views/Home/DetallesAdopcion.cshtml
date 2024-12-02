@@ -122,12 +122,10 @@
     </header>
 
     <div class="container">
-        <!-- Imagen de la mascota -->
         <img src="@Model.Foto" alt="@Model.Nombre" class="pet-image">
 
         <h1>@Model.Nombre</h1>
 
-        <!-- Información de la mascota -->
         <div class="pet-details">
             <p><span>Raza:</span> @Model.Raza</p>
             <p><span>Especie:</span> @Model.Especie</p>
@@ -137,14 +135,12 @@
             <p><span>Descripción:</span> @Model.Descripcion</p>
         </div>
 
-        <!-- Mapa de Google Maps -->
         <div class="map-container" id="map"></div>
         <div class="no-location-message" id="no-location-message" style="display: none;">
             Este post no tiene ubicación.
         </div>
     </div>
 
-    <!-- Script de Google Maps y GraphQL -->
     <script>
         async function fetchLocation(ubicacionId) {
             const query = `

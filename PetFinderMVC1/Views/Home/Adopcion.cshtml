@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
+    <title>Mascotas en Adopción</title>
     <link rel="stylesheet" href="~/css/style.css">
     <style>
         body {
@@ -79,6 +79,9 @@
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
             .adoption-card:hover {
@@ -93,6 +96,7 @@
 
             .adoption-card div {
                 padding: 1rem;
+                flex-grow: 1;
             }
 
             .adoption-card h2 {
@@ -105,6 +109,12 @@
                 font-size: 1rem;
                 color: #555;
                 margin: 0.5rem 0;
+                flex-grow: 1;
+            }
+
+            .adoption-card .btn {
+                margin-top: 1rem;
+                align-self: center;
             }
 
         footer {
@@ -124,16 +134,9 @@
         <nav>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()"></div>
             <ul>
-                <!-- Inicio -->
                 <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
-
-                <!-- Sobre Nosotros (usando anclaje absoluto al inicio) -->
                 <li><a href="/#about">Sobre Nosotros</a></li>
-
-                <!-- Adopción -->
                 <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
-
-                <!-- Publicar Mascotas -->
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Publicar</a>
                     <div class="dropdown-content">
@@ -141,8 +144,6 @@
                         <a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a>
                     </div>
                 </li>
-
-                <!-- Iniciar Sesión -->
                 <li>
                     <button id="loginButton" class="btn">Iniciar Sesión</button>
                 </li>
@@ -152,9 +153,7 @@
 
     <section class="adoption-section">
         <h1>Mascotas Disponibles para Adopción</h1>
-        <div class="adoption-cards">
-            <!-- Aquí irían las tarjetas de adopción -->
-        </div>
+        <div class="adoption-cards" id="adoptionCards"></div>
     </section>
 
     <footer>
@@ -191,8 +190,60 @@
             if (hamburger) {
                 hamburger.addEventListener('click', toggleMenu);
             }
+
+            async function loadAdoptionPets() {
+                try {
+                    const response = await fetch("http://petfinder.somee.com/graphql/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            query: `query {
+                                                            publicaciones {
+                                                                id
+                                                                nombre
+                                                                descripcion
+                                                                foto
+                                                                estado
+                                                            }
+                                                        }`,
+
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const { data } = await response.json();
+                    const allPets = data.publicaciones;
+
+                    const adoptionPets = allPets.filter(pet => pet.estado === "Adopción");
+
+                    const adoptionCardsContainer = document.getElementById("adoptionCards");
+                    adoptionCardsContainer.innerHTML = "";
+
+                    adoptionPets.forEach((pet) => {
+                        const card = document.createElement("div");
+                        card.className = "adoption-card";
+                        card.innerHTML = `
+                                                        <img src="${pet.foto || 'https://via.placeholder.com/200x200'}" alt="${pet.nombre}">
+                                                        <div>
+                                                            <h2>${pet.nombre}</h2>
+                                                            <p>${pet.descripcion}</p>
+                                                            <a href="/Home/DetallesAdopcion?id=${pet.id}" class="btn">Ver Más</a>
+                                                        </div>
+                                                    `;
+                        adoptionCardsContainer.appendChild(card);
+                    });
+                } catch (error) {
+                    console.error("Error al cargar mascotas en adopción:", error);
+                }
+            }
+
+            loadAdoptionPets();
         });
     </script>
-
 </body>
 </html>

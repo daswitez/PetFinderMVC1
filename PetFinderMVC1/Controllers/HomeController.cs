@@ -35,7 +35,6 @@ namespace PetFinderMVC1.Controllers
             return View("~/Views/Home/Index.cshtml");
         }
 
-        // Método para obtener los detalles de una publicación por ID
         public async Task<IActionResult> DetallesAdopcion(string id)
         {
             var queryPublicaciones = @"
@@ -87,7 +86,6 @@ namespace PetFinderMVC1.Controllers
         }
         public async Task<IActionResult> DetallesPerdida(string id)
         {
-            // Query GraphQL para obtener las publicaciones
             var queryPublicaciones = @"
     query {
         publicaciones {
@@ -122,7 +120,6 @@ namespace PetFinderMVC1.Controllers
 
             Publicacion publicacion = null;
 
-            // Reemplazamos la expresión lambda por un bucle foreach
             foreach (var p in publicaciones)
             {
                 if (p.Id == id)
@@ -157,5 +154,14 @@ namespace PetFinderMVC1.Controllers
         public IActionResult Beneficios() => View("~/Views/Home/Beneficios.cshtml");
 
         public IActionResult Responsabilidad() => View("~/Views/Home/Responsabilidad.cshtml");
+        public IActionResult Adopcion()
+        {
+            return View("~/Views/Home/Adopcion.cshtml");
+        }
+
+        public IActionResult Perdidas()
+        {
+            return View("~/Views/Home/Perdidas.cshtml");
+        }
     }
 }

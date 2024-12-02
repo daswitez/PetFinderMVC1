@@ -189,7 +189,6 @@
         </form>
     </div>
 
-    <!-- Cargar la API de Google Maps -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRLpUGM8veVlVaBsHzG4h3aHtJeSEx_4Q&callback=initMap" async defer></script>
 
     <script>
@@ -258,22 +257,21 @@
             }
 
             async function uploadImage(file) {
-                const fileName = `${file.name}`; // El nombre del archivo, puedes agregar un ID único si lo deseas
+                const fileName = `${file.name}`; 
                 const uploadUrl = `https://storage.googleapis.com/mi-app-imagenes/images/${fileName}`;
 
                 const response = await fetch(uploadUrl, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': file.type, // Definir el tipo de contenido (imagen)
+                        'Content-Type': file.type, 
                     },
-                    body: file, // El archivo que estamos subiendo
+                    body: file, 
                 });
 
                 if (!response.ok) {
                     throw new Error('Error al subir la imagen');
                 }
 
-                // Retornamos la URL de la imagen cargada
                 return `https://storage.googleapis.com/mi-app-imagenes/images/${fileName}`;
             }
 

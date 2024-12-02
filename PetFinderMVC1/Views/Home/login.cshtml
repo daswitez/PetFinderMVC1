@@ -113,7 +113,6 @@
     </div>
 
     <script>
-        // Login Form Submission (AJAX)
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
@@ -157,7 +156,6 @@
                 console.log("Datos parseados:", data);
 
                 if (data?.data?.login?.token) {
-                    // Guardar el token y los datos del usuario en localStorage
                     localStorage.setItem('token', data.data.login.token);
                     localStorage.setItem('user', JSON.stringify(data.data.login.usuario));
 
