@@ -1,7 +1,7 @@
 ﻿@{
     Layout = null;
-
 }
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -143,19 +143,16 @@
 
                 <!-- Iniciar Sesión -->
                 <li>
-                    <a asp-controller="Account" asp-action="Login">
-                        <button class="btn">Iniciar Sesión</button>
-                    </a>
+                    <button id="loginButton" class="btn">Iniciar Sesión</button>
                 </li>
             </ul>
         </nav>
     </header>
 
-
     <section class="adoption-section">
         <h1>Mascotas Perdidas</h1>
         <div class="adoption-cards">
-           
+            <!-- Ejemplo de tarjetas de mascotas perdidas -->
             <div class="adoption-card">
                 <img src="https://via.placeholder.com/300x200" alt="Mascota 1">
                 <div>
@@ -165,7 +162,7 @@
                     <p>Descripción: Juguetona y amigable.</p>
                 </div>
             </div>
-            
+
             <div class="adoption-card">
                 <img src="https://via.placeholder.com/300x200" alt="Mascota 2">
                 <div>
@@ -175,7 +172,7 @@
                     <p>Descripción: Tranquila y cariñosa.</p>
                 </div>
             </div>
-         
+
             <div class="adoption-card">
                 <img src="https://via.placeholder.com/300x200" alt="Mascota 3">
                 <div>
@@ -185,7 +182,7 @@
                     <p>Descripción: Energético y aventurero.</p>
                 </div>
             </div>
-          
+
             <div class="adoption-card">
                 <img src="https://via.placeholder.com/300x200" alt="Mascota 4">
                 <div>
@@ -201,5 +198,38 @@
     <footer>
         <p>&copy; 2024 Petfinder. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            const loginButton = document.getElementById('loginButton');
+            if (user) {
+                loginButton.innerText = 'Ver Cuenta';
+                loginButton.onclick = function () {
+                    window.location.href = '/Home/AccountDetails';
+                };
+            } else {
+                loginButton.innerText = 'Iniciar Sesión';
+                loginButton.onclick = function () {
+                    window.location.href = '/Home/Login';
+                };
+            }
+
+            function toggleMenu() {
+                const hamburger = document.getElementById("hamburger");
+                const navbarMenu = document.querySelector("nav ul");
+                if (hamburger && navbarMenu) {
+                    hamburger.classList.toggle("active");
+                    navbarMenu.classList.toggle("active");
+                }
+            }
+
+            const hamburger = document.getElementById("hamburger");
+            if (hamburger) {
+                hamburger.addEventListener('click', toggleMenu);
+            }
+        });
+    </script>
 </body>
 </html>

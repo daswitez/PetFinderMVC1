@@ -1,13 +1,13 @@
 ﻿@{
     Layout = null;
-
 }
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
+    <title>Publicar Mascota Perdida</title>
     <link rel="stylesheet" href="~/css/style.css">
     <style>
         body {
@@ -83,8 +83,7 @@
         input[type="text"],
         select,
         textarea,
-        input[type="file"],
-        input[type="number"] {
+        input[type="file"] {
             width: 100%;
             padding: 0.5rem;
             border: 1px solid #ccc;
@@ -110,6 +109,11 @@
             button:hover {
                 background-color: #520a5c;
             }
+
+        #map {
+            height: 300px;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -120,16 +124,9 @@
         <nav>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()"></div>
             <ul>
-                <!-- Inicio -->
                 <li><a asp-controller="Home" asp-action="Index">Inicio</a></li>
-
-                <!-- Sobre Nosotros (usando anclaje absoluto al inicio) -->
                 <li><a href="/#about">Sobre Nosotros</a></li>
-
-                <!-- Adopción -->
                 <li><a asp-controller="Adopcion" asp-action="Index">Adopta una mascota</a></li>
-
-                <!-- Publicar Mascotas -->
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Publicar</a>
                     <div class="dropdown-content">
@@ -137,21 +134,16 @@
                         <a asp-controller="Publicar" asp-action="Adopcion">Publicar Mascota en Adopción</a>
                     </div>
                 </li>
-
-                <!-- Iniciar Sesión -->
                 <li>
-                    <a asp-controller="Account" asp-action="Login">
-                        <button class="btn">Iniciar Sesión</button>
-                    </a>
+                    <button id="loginButton" class="btn">Iniciar Sesión</button>
                 </li>
             </ul>
         </nav>
     </header>
 
-
     <div class="container">
-        <h1>Publicar Mascota en Adopción</h1>
-        <form method="post" enctype="multipart/form-data">
+        <h1>Publicar Mascota En Adopción</h1>
+        <form id="createPetForm" method="post" enctype="multipart/form-data">
             <label for="name">Nombre de la mascota:</label>
             <input type="text" id="name" name="name" placeholder="Ej: Max" required>
 
@@ -184,22 +176,190 @@
             </select>
 
             <label for="description">Descripción:</label>
-            <textarea id="description" name="description" placeholder="Añada detalles como su carácter, vacunación, etc." required></textarea>
-
-            <label for="age">Edad aproximada (en meses):</label>
-            <input type="number" id="age" name="age" placeholder="Ej: 12 (1 año)" required>
+            <textarea id="description" name="description" placeholder="Describa su mascota" required></textarea>
 
             <label for="image">Imagen de la mascota:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
 
-            <label for="owner-name">Nombre del contacto:</label>
-            <input type="text" id="owner-name" name="owner-name" placeholder="Ej: Juan Pérez" required>
-
-            <label for="owner-phone">Teléfono de contacto:</label>
-            <input type="text" id="owner-phone" name="owner-phone" placeholder="Ej: +591 12345678" required>
+            <label for="location">Ubicación:</label>
+            <div id="map"></div>
+            <input type="text" id="location" name="location" placeholder="Ubicación seleccionada" disabled>
 
             <button type="submit">Publicar</button>
         </form>
     </div>
+
+    <!-- Cargar la API de Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRLpUGM8veVlVaBsHzG4h3aHtJeSEx_4Q&callback=initMap" async defer></script>
+
+    <script>
+        let map;
+        let marker;
+        let selectedLocation = null;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -17.783488, lng: -63.182031 },
+                zoom: 13,
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                selectedLocation = event.latLng;
+                document.getElementById('location').value = `Lat: ${selectedLocation.lat()}, Lng: ${selectedLocation.lng()}`;
+
+                if (marker) {
+                    marker.setPosition(selectedLocation);
+                } else {
+                    marker = new google.maps.Marker({
+                        position: selectedLocation,
+                        map: map,
+                    });
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            const loginButton = document.getElementById('loginButton');
+            if (user) {
+                loginButton.innerText = 'Ver Cuenta';
+                loginButton.onclick = function () {
+                    window.location.href = '/Home/AccountDetails';
+                };
+            } else {
+                loginButton.innerText = 'Iniciar Sesión';
+                loginButton.onclick = function () {
+                    window.location.href = '/Home/Login';
+                };
+            }
+
+            async function createLocation(lat, lng) {
+                const response = await fetch('http://petfinder.somee.com/graphql/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: `
+                                                    mutation {
+                                                        createUbicacion(input: { latitud: "${lat}", longitud: "${lng}" }) {
+                                                            id
+                                                            latitud
+                                                            longitud
+                                                        }
+                                                    }
+                                                `
+                    }),
+                });
+
+                const data = await response.json();
+                return data.data.createUbicacion.id;
+            }
+
+            async function uploadImage(file) {
+                const fileName = `${file.name}`; // El nombre del archivo, puedes agregar un ID único si lo deseas
+                const uploadUrl = `https://storage.googleapis.com/mi-app-imagenes/images/${fileName}`;
+
+                const response = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': file.type, // Definir el tipo de contenido (imagen)
+                    },
+                    body: file, // El archivo que estamos subiendo
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al subir la imagen');
+                }
+
+                // Retornamos la URL de la imagen cargada
+                return `https://storage.googleapis.com/mi-app-imagenes/images/${fileName}`;
+            }
+
+
+
+            async function submitForm(event) {
+                event.preventDefault();
+
+                if (!selectedLocation) {
+                    alert('Por favor, selecciona una ubicación en el mapa.');
+                    return;
+                }
+
+                const name = document.getElementById('name').value;
+                const breed = document.getElementById('breed').value;
+                const size = document.getElementById('size').value;
+                const color = document.getElementById('color').value;
+                const type = document.getElementById('type').value;
+                const gender = document.getElementById('gender').value;
+                const description = document.getElementById('description').value;
+                const image = document.getElementById('image').files[0];
+
+                const locationId = await createLocation(selectedLocation.lat(), selectedLocation.lng());
+                const imageUrl = await uploadImage(image);
+
+                const userId = user.id;
+
+                const response = await fetch('http://petfinder.somee.com/graphql/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: `
+                                                    mutation {
+                                                        createPublicacion(input: {
+                                                            nombre: "${name}",
+                                                            especie: "${type}",
+                                                            descripcion: "${description}",
+                                                            color: "${color}",
+                                                            foto: "${imageUrl}",
+                                                            estado: "Adopción",
+                                                            raza: "${breed}",
+                                                            sexo: "${gender}",
+                                                            tamanho: "${size}",
+                                                            ubicacionId: "${locationId}",
+                                                            usuarioId: "${userId}"
+                                                        }) {
+                                                            id
+                                                            foto
+                                                            descripcion
+                                                            fechaPublicacion
+                                                            usuarioId
+                                                            ubicacionId
+                                                            estado
+                                                            nombre
+                                                            especie
+                                                            raza
+                                                            color
+                                                            tamanho
+                                                            sexo
+                                                        }
+                                                    }
+                                                `
+                    }),
+                });
+
+                const result = await response.json();
+                if (result.errors) {
+                    alert('Error al publicar la mascota.');
+                } else {
+                    alert('Publicación creada con éxito');
+                    window.location.href = '/Home';
+                }
+            }
+
+            const form = document.getElementById('createPetForm');
+            form.addEventListener('submit', submitForm);
+        });
+
+        function toggleMenu() {
+            const hamburger = document.getElementById("hamburger");
+            const navbarMenu = document.querySelector("nav ul");
+            hamburger.classList.toggle("active");
+            navbarMenu.classList.toggle("active");
+        }
+    </script>
 </body>
 </html>

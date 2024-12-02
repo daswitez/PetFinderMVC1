@@ -61,38 +61,39 @@
         </div>
     </section>
 
-    <section class="pets-adoption">
-        <h2>Mascotas en Adopción</h2>
-        <div class="pet-cards">
-            <div class="pet-card">
-                <div class="pet-image">
-                    <img src="https://via.placeholder.com/200x200" alt="Mascota 1">
-                </div>
-                <div class="pet-info">
-                    <p>Poly</p>
-                    <a asp-controller="Adopcion" asp-action="Index"><button class="btn">Ver Más</button></a>
-                </div>
+<section class="pets-adoption">
+    <h2>Mascotas en Adopción</h2>
+    <div class="pet-cards">
+        <div class="pet-card">
+            <div class="pet-image">
+                <img src="https://via.placeholder.com/200x200" alt="Mascota en Adopción 1">
             </div>
-            <div class="pet-card">
-                <div class="pet-image">
-                    <img src="https://via.placeholder.com/200x200" alt="Mascota 2">
-                </div>
-                <div class="pet-info">
-                    <p>Sally</p>
-                    <a asp-controller="Adopcion" asp-action="Index"><button class="btn">Ver Más</button></a>
-                </div>
-            </div>
-            <div class="pet-card">
-                <div class="pet-image">
-                    <img src="https://via.placeholder.com/200x200" alt="Mascota 3">
-                </div>
-                <div class="pet-info">
-                    <p>Bartösz</p>
-                    <a asp-controller="Adopcion" asp-action="Index"><button class="btn">Ver Más</button></a>
-                </div>
+            <div class="pet-info">
+                <p>Poly</p>
+                <a href="@Url.Action("DetallesAdopcion", "Adopcion", new { id = 1 })" class="view-more-btn">Ver más</a>
             </div>
         </div>
-    </section>
+        <div class="pet-card">
+            <div class="pet-image">
+                <img src="https://via.placeholder.com/200x200" alt="Mascota en Adopción 2">
+            </div>
+            <div class="pet-info">
+                <p>Sally</p>
+                <a href="@Url.Action("DetallesAdopcion", "Adopcion", new { id = 2 })" class="view-more-btn">Ver más</a>
+            </div>
+        </div>
+        <div class="pet-card">
+            <div class="pet-image">
+                <img src="https://via.placeholder.com/200x200" alt="Mascota en Adopción 3">
+            </div>
+            <div class="pet-info">
+                <p>Bartösz</p>
+                <a href="@Url.Action("DetallesAdopcion", "Adopcion", new { id = 3 })" class="view-more-btn">Ver más</a>
+            </div>
+        </div>
+    </div>
+</section>
+
 
     <section class="pets-lost">
         <h2>Mascotas Perdidas</h2>
@@ -132,25 +133,23 @@
     <section id="more-pets" class="more-pets">
         <h2>Más Sobre Mascotas</h2>
         <div class="more-pets-content">
+
+            <!-- Imagen alineada correctamente -->
             <div class="info-card">
-                <img src="https://via.placeholder.com/150" alt="Adopción" class="info-card-img">
+                <img src="https://www.bezzia.com/wp-content/uploads/2018/02/3-libros-recomendados-para-el-cuidado-de-mascotas-1.jpg"
+                     alt="Adopción"
+                     class="info-card-img">
+            </div>
+            <!-- Texto alineado -->
+            <div class="info-text">
+
                 <h3>Adoptar Es una Gran Responsabilidad</h3>
                 <p>Al adoptar, le das una nueva oportunidad de vida a una mascota. Infórmate sobre cómo prepararte para darle un hogar.</p>
-            </div>
-            <div class="info-card">
-                <img src="https://via.placeholder.com/150" alt="Consejos de Cuidado" class="info-card-img">
-                <h3>Consejos para Cuidar a Tu Nueva Mascota</h3>
-                <p>Una vez adoptada, es importante saber cómo cuidar de tu mascota. Te damos algunos consejos prácticos para su bienestar.</p>
-            </div>
-            <div class="info-card">
-                <img src="https://via.placeholder.com/150" alt="Esterilización" class="info-card-img">
-                <h3>La Importancia de la Esterilización</h3>
-                <p>La esterilización es esencial para evitar la sobrepoblación de animales. Aprende más sobre este proceso y sus beneficios.</p>
+                <a asp-controller="SobreMascotas" asp-action="Index" class="btn-link">
+                    <button class="btn">Ver Más</button>
+                </a>
             </div>
         </div>
-        <a asp-controller="SobreMascotas" asp-action="Index">
-            <button class="btn">Ver Más</button>
-        </a>
     </section>
 
     <section id="about" class="about">
@@ -206,14 +205,14 @@
                     },
                     body: JSON.stringify({
                         query: `query {
-                                            publicaciones {
-                                                id
-                                                estado
-                                                foto
-                                                descripcion
-                                                nombre
-                                            }
-                                        }`,
+                                    publicaciones {
+                                        id
+                                        estado
+                                        foto
+                                        descripcion
+                                        nombre
+                                    }
+                                }`,
                     }),
                 });
 
@@ -236,27 +235,25 @@
 
                     // Contenido de la tarjeta
                     card.innerHTML = `
-                                    <img src="${publicacion.foto}" alt="Mascota">
-                                    <div class="pet-info">
-                                        <p>${publicacion.nombre}</p>
-                                        <p>${publicacion.descripcion}</p>
-                                    </div>
-                                `;
+                            <div class="pet-image">
+                                <img src="${publicacion.foto || 'https://via.placeholder.com/200x200'}" alt="${publicacion.nombre}">
+                            </div>
+                            <div class="pet-info">
+                                <p>${publicacion.nombre}</p>
+                                <p>${publicacion.descripcion}</p>
+                                ${publicacion.estado === "Adopción"
+                            ? '<a href="/Home/DetallesAdopcion?id=' + publicacion.id + '"><button class="btn view-more-btn">Ver más</button></a>'
+                            : ''}
+                                ${publicacion.estado === "Perdida"
+                            ? '<button class="btn view-more-btn" onclick="window.location.href=\'/Home/DetallesPerdida?id=' + publicacion.id + '\'">Ver más</button>'
+                            : ""}
+                            </div>
+                        `;
 
+                    // Añadir tarjeta al contenedor correspondiente según el estado
                     if (publicacion.estado === "Adopción") {
                         contenedorAdopcion.appendChild(card);
                     } else if (publicacion.estado === "Perdida") {
-                        // Agregar botón "Ver Más" para mascotas perdidas
-                        const btn = document.createElement("button");
-                        btn.className = "btn view-more-btn";
-                        btn.innerText = "Ver más";
-                        btn.onclick = function () {
-                            window.location.href = "/Home/DetallesPerdida";
-                        };
-
-                        const petInfo = card.querySelector(".pet-info");
-                        petInfo.appendChild(btn);
-
                         contenedorPerdidas.appendChild(card);
                     }
                 });
@@ -268,5 +265,7 @@
 
         document.addEventListener("DOMContentLoaded", cargarPublicaciones);
     </script>
+
+
 </body>
 </html>

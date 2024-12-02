@@ -5,7 +5,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     line-height: 1.6;
-    min-height: 100vh; 
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -222,7 +222,7 @@ header {
             color: #660c79;
         }
 
-    
+
     .pet-card.ver-mas {
         display: flex;
         justify-content: center;
@@ -434,7 +434,7 @@ nav ul {
 
 
 .dropdown-content {
-    display: none; 
+    display: none;
     position: absolute;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -477,54 +477,178 @@ section {
     }
 
 
-.more-pets {
-    background-color: #f4f4f4;
-    margin-top: 40px;
+/* Sección general */
+#more-pets {
+    padding: 40px 0;
+    background-color: #f9f9f9;
 }
 
-.more-pets-content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.info-card {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    width: 280px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
-    .info-card h3 {
-        font-size: 1.8em;
+    #more-pets h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        text-align: center;
         color: #333;
     }
 
-    .info-card p {
-        font-size: 1em;
-        color: #666;
-        line-height: 1.6;
-    }
-
-    .info-card button {
-        margin-top: 20px;
-    }
-
-
-button.btn {
-    background-color: #7D4BDB; 
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
+/* Contenido principal */
+.more-pets-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* Adaptable para dispositivos más pequeños */
 }
 
-    button.btn:hover {
-        background-color: #5a3c9c;
+/* Imagen */
+.info-card {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.info-card-img {
+    width: 100%;
+    max-width: 800px; /* Tamaño máximo */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto */
+.info-text {
+    flex: 1;
+    max-width: 500px;
+    text-align: left;
+    padding: 0 20px;
+}
+
+    .info-text h3 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #444;
     }
+
+    .info-text p {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+/* Botón */
+.btn-link {
+    text-decoration: none;
+}
+
+.btn {
+    background-color: #5c6bc0;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: #3f51b5;
+    }
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .more-pets-content {
+        flex-direction: column; /* Coloca la imagen arriba y el texto abajo */
+    }
+
+    .info-text {
+        text-align: center;
+        padding: 0;
+    }
+}
+
+
+/* Contenedor de la tarjeta */
+.pet-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-radius: 12px; /* Bordes más suaves */
+    background-color: #f9f9f9; /* Color de fondo claro */
+    width: 250px; /* Ancho fijo */
+    height: 500px; /* Altura de la tarjeta ajustada */
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+    /* Efecto de hover en la tarjeta */
+    .pet-card:hover {
+        transform: translateY(-8px); /* Efecto de desplazamiento hacia arriba */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más fuerte al hacer hover */
+    }
+
+/* Título de la tarjeta */
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+/* Imagen de la mascota */
+.pet-image {
+    width: 100%; /* Imagen que cubra todo el contenedor */
+    height: 400px; /* Altura ajustada */
+    border-radius: 8px; /* Bordes suaves en la imagen */
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+    .pet-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Asegura que la imagen cubra el contenedor */
+    }
+
+/* Nombre de la mascota */
+.pet-info {
+    font-size: 16px;
+    font-weight: normal;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+/* Botón */
+.btn {
+    background-color: #6a1b9a; /* Color más visible, morado */
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: #4a148c; /* Color más oscuro al pasar el ratón */
+    }
+
+
+
+.pets-lost .pet-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+.pets-lost {
+    background-color: #f7f7f7;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
